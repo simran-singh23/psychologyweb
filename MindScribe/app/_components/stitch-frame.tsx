@@ -1,0 +1,4 @@
+"use client";
+import { useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
+export function StitchFrame({screen,children}:{screen:string;children?:ReactNode}){const frame=useRef<HTMLIFrameElement>(null);const[mount,setMount]=useState<HTMLElement|null>(null);const onLoad=()=>{const doc=frame.current?.contentDocument;if(!doc||doc.getElementById("find-your-support-mount"))return;const node=doc.createElement("div");node.id="find-your-support-mount";const sections=doc.querySelectorAll("main > div > section");sections[1]?.before(node);if(!node.isConnected)doc.querySelector("main > div")?.append(node);setMount(node)};return <><iframe ref={frame} onLoad={onLoad} className="stitch-frame" src={`/stitch/${screen}`} title="MindScribe Psychology & Counselling"/>{mount&&children?createPortal(children,mount):null}</>}
